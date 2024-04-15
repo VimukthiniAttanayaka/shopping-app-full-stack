@@ -4,6 +4,8 @@ import AppleImage from "../../../assets/images/prodcuts/Apple.jpg"
 import {Edit2, Eye, Trash2} from "react-feather";
 import {IProduct} from "../../../Types/IProduct";
 import {BsFillCircleFill} from "react-icons/bs";
+import Swal from "sweetalert2";
+import {useToasts} from 'react-toast-notifications';
 import {useNavigate} from "react-router-dom";
 
 type ProductTableItemProps = {
@@ -11,6 +13,7 @@ type ProductTableItemProps = {
 }
 
 const ProductsListItem: FC<ProductTableItemProps> = (product) => {
+    const {addToast} = useToasts();
 
     const navigate = useNavigate();
 
@@ -64,6 +67,21 @@ const ProductsListItem: FC<ProductTableItemProps> = (product) => {
             </label>;
     }
 
+    const handleOnClick = () => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result: any) => {
+          if (result.isConfirmed) {
+            addToast("Product deleted", {appearance: 'success', autoDismiss: true, placement:'top-right'});
+          }
+        });
+      };
     const handleOnViewClick = () => {
         //  this isDisabled need to create in redux store and have to send data from here
         // isDisabled = true;
@@ -102,7 +120,7 @@ const ProductsListItem: FC<ProductTableItemProps> = (product) => {
                     <Col className='d-flex px-0 product-table-item-actions justify-content-around'>
                         <Eye className="btn-eye" size={'18px'} color={'black'} onClick={handleOnViewClick}/>
                         <Edit2 className="btn-edit" size={'18px'} color={'#D0A617'}/>
-                        <Trash2 className="btn-trash2" size={'18px'} color={'#F42B3D'}/>
+                        <Trash2 className="btn-trash2" size={'18px'} color={'#F42B3D'} onClick={handleOnClick}/>
                     </Col>
                 </Row>
             </td>

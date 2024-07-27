@@ -1,5 +1,7 @@
 # shopping-app-full-stack
 
-Working branch -> develop
-build tool -> vite
-packaging manager -> npm
+<p>
+Working branch -> develop <br/>
+build tool -> vite <br/>
+packaging manager -> npm <br/>
+</p>

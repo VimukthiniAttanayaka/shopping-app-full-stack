@@ -1,0 +1,124 @@
+$quentity-color: #cacaca;
+$pricing-red: #dc3545;
+$link-black: #262626;
+$link-padding: 6px;
+.stick {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000 !important;
+}
+.logo-bar {
+  background-color: #ffffff;
+  padding-top: 1.1rem;
+  padding-bottom: 1rem;
+  padding-left: 12px;
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 2px 6px -1px $quentity-color;
+
+  .navbar-logo{
+    max-width: 100% !important;
+    height: 30px !important;
+  }
+  .img-fluid {
+    height: 2.2rem
+  }
+
+  .shopping-cart-and-basket {
+    .shopping-cart {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      stroke: #4caf50;
+    }
+
+    .cart-basket {
+      font-size: 0.8rem;
+      font-weight: 500;
+      font-family: 'Montserrat', sans-serif;
+      margin-top: -4px;
+      margin-left: -15px;
+      width: 19px;
+      height: 19px;
+      color: #fff;
+      background-color: #4caf50;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0px 1px 1px 0.6px #757774;
+    }
+  }
+
+  .btn {
+    height: 2.2rem;
+    width: 6.1rem;
+    font-size: 1rem;
+    background-color: #4caf50;
+    border-radius: 0.3rem;
+    font-weight: 500;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .logo-bar {
+
+    .shopping-cart-and-basket {
+      .cart-basket {
+        padding-top: 2px;
+      }
+    }
+  }
+
+}
+
+@media all and (max-width: 360px) {
+  .header-navbar {
+    //font-size: 5px !important;
+    color: red !important;
+
+    .nav-link {
+      padding-right: 4px !important;
+      padding-left: 4px !important;
+    }
+  }
+}
+
+//Navbar styles
+.header-navbar {
+  position: unset;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  font-weight: 400;
+  color: red !important;
+
+  .nav-link {
+    color: $link-black !important;
+    padding-top: $link-padding !important;
+    padding-bottom: $link-padding !important;
+  }
+
+  .navbar-dropdown {
+    border: 1px solid #1E7F35;
+    border-radius: 5px;
+
+    .dropdown-item {
+      color: #212529 !important;
+    }
+
+    #collasible-nav-dropdown {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  #pricing-link {
+    color: $pricing-red !important;
+    border: 1px solid $pricing-red;
+    border-radius: 5px;
+
+    &:hover {
+      color: white !important;
+      background-color: $pricing-red;
+    }
+  }
+}

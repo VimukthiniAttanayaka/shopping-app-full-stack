@@ -1,0 +1,35 @@
+.left-navigation {
+  height: calc(100vh);
+  background-color: #0C2556;
+}
+
+.logo-text {
+  color: #4DAF51;
+  font-weight: 500;
+}
+
+.nav-list a {
+  display: grid;
+  align-items: center;
+  background-color: transparent;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: #707070;
+  font-weight: 400;
+  height: 45px !important;
+}
+
+.nav-list a li svg {
+  margin-right: 10px;
+}
+
+.active {
+  background-color: #0F2E69 !important;
+  color: white;
+}
+
+.active li {
+  color: white;
+}

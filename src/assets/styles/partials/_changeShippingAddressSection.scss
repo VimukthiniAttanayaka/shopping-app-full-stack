@@ -1,0 +1,38 @@
+.payment-method {
+
+  .payment-method-card {
+
+    label {
+      display: flex;
+      text-align: center;
+      justify-items: center;
+      //justify-content: center;
+    }
+
+    [type=radio] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    border: 1px solid #CCE4FE;
+    border-radius: 3px;
+
+    label:hover {
+      cursor: pointer !important;
+    }
+  }
+
+  .selected-payment-method {
+    outline: 2px solid #4DAF51 !important;
+
+  }
+}
+
+@media (max-width: 819px) {
+  svg{
+    font-size: 75px;
+  }
+}
+

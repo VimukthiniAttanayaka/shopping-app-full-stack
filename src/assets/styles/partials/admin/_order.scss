@@ -1,0 +1,62 @@
+.order-customer-details {
+  height: 75vh;
+  overflow-y: scroll;
+  .order-info-card {
+    border-bottom: 10px solid #f4f6f8;
+
+    .order-info-table {
+      td {
+        padding-left: 0;
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      .details-table-label {
+        color: #91a8bb;
+        font-weight: 600;
+      }
+    }
+  }
+}/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.order-items-card {
+  max-height: 75vh;
+  overflow-y: auto;
+  .orders-table {
+    tr {
+      border-top: 2px solid #f4f6f8;
+
+      th {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #91a8bb;
+      }
+
+      td {
+        .order-item-image {
+          width: 50px;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}

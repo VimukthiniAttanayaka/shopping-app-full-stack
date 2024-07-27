@@ -1,0 +1,17 @@
+.content-wrapper{
+  height: calc(100% - 50px);
+  grid-template-rows: 0.8fr 9.5fr;
+  background-color: #F3F6F8;
+}
+
+.content-header{
+  border: 1px solid green;
+}
+.br{
+  border: 1px solid red;
+}
+
+.content{
+  background-color: white;
+  border-radius: 5px;
+}

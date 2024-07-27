@@ -1,0 +1,118 @@
+$grey: #0c0c0c;
+$icon-grey: #8E8E8E;
+$apply-green: #4CAF50;
+$green: #89f302;
+
+.contact-bar {
+  padding-left: 0;
+  margin-left: 0;
+  font-size: 13px !important;
+  line-height: 18px !important;
+
+  .label {
+    color: $apply-green;
+  }
+
+  .button-login {
+    padding-right: 0;
+    text-align: start;
+    color: $apply-green;
+    cursor: pointer;
+  }
+
+  .href {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 13px;
+  }
+
+  .login-btn {
+    color: $apply-green;
+  }
+
+  .my-account {
+    :hover {
+      color: #8f8f8f;
+      cursor: pointer;
+    }
+  }
+
+  .delivery-area {
+    color: #000000;
+
+    :hover {
+      color: #8f8f8f;
+      cursor: pointer;
+    }
+  }
+
+  .truck {
+    :hover {
+      cursor: default;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .contact-bar {
+    .contact-number {
+      margin-right: -95%;
+      margin-left: 95%;
+    }
+  }
+}
+
+@media (min-width: 414px) {
+  .contact-bar {
+    font-size: 15px;
+
+    .register-button {
+      color: $green;
+      padding-right: 0;
+      display: contents;
+      border-width: 1px;
+      border-style: solid;
+      border-color: $apply-green;
+      border-radius: 3px;
+      cursor: pointer;
+      width: 30%;
+
+      span {
+        color: $apply-green;
+        border-color: $apply-green;
+
+      }
+
+      .href {
+        color: $apply-green;
+        text-decoration: none;
+        font-weight: 200;
+      }
+    }
+  }
+
+  // Large devices (desktops, 992px and up)
+  @media (min-width: 992px) {
+    .contact-bar {
+      .register-button {
+        color: $green;
+        padding-right: 0;
+        display: contents;
+        border-width: 1px;
+        border-style: solid;
+        border-color: $apply-green;
+        border-radius: 3px;
+        cursor: pointer;
+        width: auto;
+
+        span {
+          color: $apply-green;
+          border-color: $apply-green;
+
+        }
+      }
+    }
+  }
+
+}

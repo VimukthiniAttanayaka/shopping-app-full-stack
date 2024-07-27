@@ -1,0 +1,136 @@
+.admin-product {
+  p {
+    display: flex;
+    vertical-align: middle;
+    font-weight: bolder;
+  }
+}
+
+.add-product {
+  background-color: #0C2556;
+  border: none;
+  font-weight: 500;
+  padding: 8px 15px;
+  color: white;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #0C2556;
+    cursor: pointer;
+  }
+
+
+  box-shadow: none;
+  outline: none !important;
+}
+
+.table > :not(:first-child) {
+  border: #e7f1f7;
+}
+
+td {
+  border: unset;
+}
+
+th {
+  border: unset;
+  color: #8ba9bd;
+}
+
+.bold {
+  font-weight: bolder;
+}
+
+
+//pagination
+
+.admin-pagi {
+  justify-content: center;
+  position: absolute;
+  bottom: 5%;
+  right: 3%;
+}
+
+.pagination {
+
+  justify-content: center;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+  border-radius: 50%;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+.links {
+  border: unset !important;
+  font-weight: bold;
+}
+
+//=========================================================
+.product-item-image {
+  width: 50px;
+  border-radius: 5px;
+}
+
+.product-table-item td {
+  vertical-align: middle;
+}
+
+.product-table-item-actions {
+  width: 20px !important;
+  max-width: 80px !important;
+
+  svg {
+    &:hover {
+      transform: scale(1.1);
+      transition: 0.2s;
+    }
+  }
+}
+
+//======================Pagination===============================
+/*Page numbers*/
+
+.single-page-number {
+  border-radius: 8px;
+  border: 2px solid transparent;
+
+}
+
+.single-page-number:hover {
+  cursor: pointer;
+  border: 2px solid #0C2556;
+  /*transform: scale(1.2);*/
+}
+
+.active-page-number {
+  background-color: #0C2556;
+  transition: transform .2s;
+  color: white;
+}
+
+.pagination-group {
+  width: calc(77%);
+
+  svg {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

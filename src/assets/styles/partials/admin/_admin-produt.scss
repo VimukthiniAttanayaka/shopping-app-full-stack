@@ -1,0 +1,55 @@
+.admin-add-product {
+  height: 75vh;
+  overflow-y: auto;
+
+  .custom-file-upload {
+    padding: 6px 12px;
+    cursor: pointer;
+    height: 19rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f7f9;
+
+    .image-icon {
+      height: 4rem;
+      width: 4rem;
+      stroke-width: 1px !important;
+    }
+
+    .uploaded-image {
+      height: 19rem;
+      width: auto;
+    }
+  }
+  .custom-file-upload-active {
+    cursor:default !important;
+  }
+
+  .create-product-button {
+    //width: 10rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background-color: #0C2556;
+    border: none;
+  }
+}
+
+
+.admin-add-product::-webkit-scrollbar {
+  width: 10px;
+}
+
+.admin-add-product::-webkit-scrollbar-track {
+  background-color: #CECECE;
+}
+
+.admin-add-product::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 6px #0C2556;
+}
+
+.chevron-right-icon {
+  height: 1rem;
+  width: 1rem;
+}

@@ -12,6 +12,7 @@ import {uploadFile} from "../../../api/files";
 import InputGroup from "../common/InputGroup";
 import {ErrorMessage, Form, Formik} from 'formik';
 import * as Yup from 'yup';
+import {toast} from "react-toastify";
 
 const categoryOptions = [
     {value: 'grocery', label: 'Grocery'},
@@ -47,15 +48,16 @@ const AddProduct: React.FC = () => {
     }, [data])
 
     const handleImageChange = async (event: any) => {
-        setImage(event.target.files[0]);
+        setImage(URL.createObjectURL(event.target.files[0]));
         const uploadResult = await uploadFile(event.target.files[0]);
         if (uploadResult.httpStatusCode === 200) {
             setUploadedImageName(uploadResult.data);
             setIsImageUploaded(true);
+            toast.success("image uploaded successfully")
         } else {
             setUploadedImageName(uploadResult.data)
             setIsImageUploaded(false)
-            alert("image upload failed")
+            toast.error("image upload failed")
         }
     }
 
@@ -131,7 +133,7 @@ const AddProduct: React.FC = () => {
                                 </Col>
                                 <Col lg={6}>
                                     <InputGroup
-                                        label={""}
+                                        label={"PRODUCT QUANTITY"}
                                         type={"number"}
                                         placeholder="Enter Product Quantity"
                                         min='0'

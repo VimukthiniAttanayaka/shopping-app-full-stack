@@ -50,13 +50,12 @@ const Product: React.FC<ProductProps> = (props) => {
         setCartBtnText("Update");
         setCartBtnBackground("add-cart-btn-u");
     }
-
     return (
         <Col xs={6} md={4} lg={url === '/admin/products/addproduct' ? 6 : 3}
              className={url === '/admin/products/addproduct' ? 'mb-1 mb-sm-2 products ps-0' : 'mt-1 mb-1 mb-sm-2 products'}>
             <Row className='product-item'>
                 <Col sm={12} className='product-img'>
-                    <Image src={props.product.image} alt="product"/>
+                    <Image src={product.image} alt="product"/>
                 </Col>
                 <Col sm={12} className='product-name px-3'>
                     <p>{product.name}</p>
@@ -85,7 +84,7 @@ const Product: React.FC<ProductProps> = (props) => {
                             <Col xs={12} sm={7} md={8} lg={6} className='product-add-cart ps-sm-0 pe-2'>
                                 <Button type='submit' variant="light" className={cartBtnBackground}
                                         onClick={cartAdd}
-                                        disabled={url === '/admin/products/addproduct' ? true : false}
+                                        disabled={url === '/admin/products/addproduct'}
                                 >{cartBtnText}</Button>
                             </Col>
                         </Row>

@@ -1,6 +1,5 @@
 import {DateTime} from 'luxon'
-
-const {S3Client, PutObjectCommand} = require("@aws-sdk/client-s3");
+import {S3Client, PutObjectCommand} from "@aws-sdk/client-s3"
 
 interface File {
     name: string;

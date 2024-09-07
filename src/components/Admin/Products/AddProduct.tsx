@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Button, Col, FormGroup, FormLabel, Nav, Navbar, Row} from "react-bootstrap";
+import {Button, Col, Form, Nav, Navbar, Row} from "react-bootstrap";
 import Select from 'react-select';
-import NumberFormat from 'react-number-format';
 import Product from "../../products/Product";
 import {IProduct} from "../../../Types/IProduct";
 import {ChevronRight, Image, ThumbsUp} from "react-feather";
@@ -10,8 +9,9 @@ import {useMutation} from "@apollo/client";
 import {ADD_PRODUCT} from "../../../api/product";
 import {uploadFile} from "../../../api/files";
 import InputGroup from "../common/InputGroup";
-import {ErrorMessage, Form, Formik} from 'formik';
+import {ErrorMessage, Formik} from 'formik';
 import * as Yup from 'yup';
+import {toast} from "react-toastify";
 
 const categoryOptions = [
     {value: 'grocery', label: 'Grocery'},
@@ -22,9 +22,9 @@ const categoryOptions = [
 
 const productInitialState: IProduct = {
     name: "",
-    quantity: 0,
-    price: 0,
-    discountedPrice: 0,
+    quantity: '',
+    price: '',
+    discountedPrice: '',
     description: "",
     category: "",
     image: "",
@@ -47,15 +47,17 @@ const AddProduct: React.FC = () => {
     }, [data])
 
     const handleImageChange = async (event: any) => {
-        setImage(event.target.files[0]);
+        setImage(URL.createObjectURL(event.target.files[0]));
         const uploadResult = await uploadFile(event.target.files[0]);
+        console.log(uploadResult)
         if (uploadResult.httpStatusCode === 200) {
             setUploadedImageName(uploadResult.data);
             setIsImageUploaded(true);
+            toast.success("image uploaded successfully")
         } else {
             setUploadedImageName(uploadResult.data)
             setIsImageUploaded(false)
-            alert("image upload failed")
+            toast.error("image upload failed")
         }
     }
 
@@ -67,9 +69,9 @@ const AddProduct: React.FC = () => {
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Product name is required'),
-        quantity: Yup.number().min(0, 'Quantity must be greater than or equal to 0').required('Quantity is required'),
-        price: Yup.number().min(0, 'Price must be greater than or equal to 0').required('Price is required'),
-        discountedPrice: Yup.number().min(0, 'Discounted price must be greater than or equal to 0').required('Discounted price is required'),
+        quantity: Yup.number().required('Quantity is required').min(0, 'Quantity must be greater than or equal to 0'),
+        price: Yup.number().required('Price is required').min(0, 'Price must be greater than or equal to 0'),
+        discountedPrice: Yup.number().required('Discounted price is required').min(0, 'Discounted price must be greater than or equal to 0'),
         description: Yup.string().required('Description is required'),
         category: Yup.string().required('Category is required'),
     });
@@ -109,14 +111,15 @@ const AddProduct: React.FC = () => {
                     initialValues={productInitialState}
                     validationSchema={validationSchema}
                     onSubmit={(values, {setSubmitting}) => {
+                        console.log(values)
                         createProduct({
                             variables: {productInput: {...values, image: uploadedImageName}}
                         });
                         setSubmitting(false);
                     }}
                 >
-                    {({setFieldValue, handleChange, values, isSubmitting}) => (
-                        <Form noValidate>
+                    {({handleChange, values, isSubmitting, handleBlur, handleSubmit, setFieldValue}) => (
+                        <Form onSubmit={handleSubmit}>
                             <Row>
                                 <Col lg={6}>
                                     <InputGroup
@@ -131,14 +134,12 @@ const AddProduct: React.FC = () => {
                                 </Col>
                                 <Col lg={6}>
                                     <InputGroup
-                                        label={""}
+                                        label={"PRODUCT QUANTITY"}
                                         type={"number"}
                                         placeholder="Enter Product Quantity"
-                                        min='0'
-                                        as={NumberFormat}
-                                        allowNegative={false}
-                                        isRequired={true}
-                                        handleOnChange={(value: any) => setFieldValue('quantity', value.floatValue)}
+                                        // min='0'
+                                        // as={NumberFormat}
+                                        handleOnChange={handleChange}
                                         isDisabled={isDisabled}
                                         name="quantity"
                                     />
@@ -149,19 +150,19 @@ const AddProduct: React.FC = () => {
                                         label={"PRICE"}
                                         type={"number"}
                                         placeholder="Enter Product Price"
-                                        as={NumberFormat}
-                                        allowNegative={false}
-                                        thousandSeparator={true}
-                                        isRequired={true}
-                                        handleOnChange={(value: any) => setFieldValue('price', value.floatValue)}
+                                        // as={NumberFormat}
+                                        // allowNegative={false}
+                                        // thousandSeparator={true}
+                                        // isRequired={true}
+                                        handleOnChange={handleChange}
                                         isDisabled={isDisabled}
                                         name="price"
                                     />
                                     <ErrorMessage name="price" component="div" className="text-danger"/>
                                 </Col>
                                 <Col lg={6}>
-                                    <FormGroup className="mb-3">
-                                        <FormLabel>PRODUCT CATEGORY</FormLabel>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>PRODUCT CATEGORY</Form.Label>
                                         <Select
                                             options={categoryOptions}
                                             placeholder="Select Product Category"
@@ -172,7 +173,7 @@ const AddProduct: React.FC = () => {
                                             name="category"
                                         />
                                         <ErrorMessage name="category" component="div" className="text-danger"/>
-                                    </FormGroup>
+                                    </Form.Group>
                                 </Col>
                                 <Col lg={6}>
                                     <InputGroup
@@ -187,11 +188,10 @@ const AddProduct: React.FC = () => {
                                         label={"DISCOUNTED PRICE"}
                                         type={"number"}
                                         placeholder="Enter discounted Price"
-                                        as={NumberFormat}
+                                        // as={NumberFormat}
                                         thousandSeparator={true}
                                         allowNegative={false}
-                                        isRequired={true}
-                                        handleOnChange={(value: any) => setFieldValue('discountedPrice', value.floatValue)}
+                                        handleOnChange={handleChange}
                                         isDisabled={isDisabled}
                                         name="discountedPrice"
                                     />
@@ -211,8 +211,8 @@ const AddProduct: React.FC = () => {
                                     <ErrorMessage name="description" component="div" className="text-danger"/>
                                 </Col>
                                 <Col xs={6}>
-                                    <FormGroup className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                        <FormLabel>PRODUCT IMAGE</FormLabel>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                        <Form.Label>PRODUCT IMAGE</Form.Label>
 
                                         <label
                                             className={isImageUploaded ? 'custom-file-upload mt-0 custom-file-upload-active' :
@@ -250,10 +250,10 @@ const AddProduct: React.FC = () => {
                                                 }
                                             </span>
                                         </label>
-                                    </FormGroup>
+                                    </Form.Group>
                                 </Col>
                                 <Col xs={6} className='product'>
-                                    <FormLabel>PRODUCT PREVIEW</FormLabel>
+                                    <Form.Label>PRODUCT PREVIEW</Form.Label>
                                     <Product
                                         product={{...values, image}}
                                         index={1}
@@ -268,8 +268,8 @@ const AddProduct: React.FC = () => {
                                     </Button>
                                 </Col>
                             </Row>
-                        </Form>
-                    )}
+                            </Form> 
+                        )}
                 </Formik>
             </Col>
         </Row>

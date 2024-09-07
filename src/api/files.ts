@@ -1,6 +1,5 @@
 import {DateTime} from 'luxon'
-
-import {S3Client, PutObjectCommand} from '@aws-sdk/client-s3';
+import {S3Client, PutObjectCommand} from "@aws-sdk/client-s3"
 
 interface File {
     name: string;

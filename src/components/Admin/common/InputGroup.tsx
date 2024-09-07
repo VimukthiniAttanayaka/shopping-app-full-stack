@@ -8,7 +8,6 @@ type FormGroupProps = {
     label: string
     type: string
     placeholder?: string
-    isRequired?: boolean
     min?: string
     as?: any
     allowNegative?: boolean
@@ -24,7 +23,6 @@ const InputGroup:FC<FormGroupProps> = (props) => {
         label,
         type,
         placeholder,
-        isRequired,
         value,
         min,
         as,
@@ -40,13 +38,12 @@ const InputGroup:FC<FormGroupProps> = (props) => {
                 value={value}
                 type={type}
                 placeholder={placeholder}
-                required={isRequired}
                 onChange={handleOnChange}
                 disabled={isDisabled}
                 min={min}
                 as={as}
-                allowNegative={allowNegative}
-                thousandSeparator={thousandSeparator}
+                // allowNegative={allowNegative}
+                // thousandSeparator={thousandSeparator}
                 rows={rows}
                 name={name}
             />

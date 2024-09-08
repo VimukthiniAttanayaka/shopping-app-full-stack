@@ -1,10 +1,11 @@
-import {FC} from "react";
-import {Col, Row} from "react-bootstrap";
-import {Plus} from "react-feather";
+import { FC } from "react";
+import { Button, Col, Row } from "react-bootstrap";
+import { Plus } from "react-feather";
 import ProductsTable from "./ProductsTable";
-import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Products: FC = () => {
+    const navigate = useNavigate()
 
     return (
         <Row className='content-wrapper d-grid p-lg-4 pt-lg-2 mx-0'>
@@ -13,12 +14,12 @@ const Products: FC = () => {
                     <p className="m-0 fs-4">Products</p>
                 </Col>
                 <Col className="d-flex justify-content-end p-0">
-                    <div className="add-product fs-6"><Link to='/admin/products/addproduct'
-                                                            className='text-decoration-none text-reset'><Plus/> Add
-                        Products</Link></div>
+                    <Button className="add-product fs-6" onClick={() => navigate('/admin/products/addproduct')} >
+                        <Plus /> Add Products
+                    </Button>
                 </Col>
             </Row>
-            <ProductsTable/>
+            <ProductsTable />
         </Row>
     );
 }

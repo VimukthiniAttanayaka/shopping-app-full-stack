@@ -124,6 +124,10 @@ th {
   transition: transform .2s;
   color: white;
 }
+.products-table-Skeleton {
+  height: 300px;
+  width: 100%;
+}
 
 .pagination-group {
   width: calc(77%);

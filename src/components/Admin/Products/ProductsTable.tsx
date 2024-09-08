@@ -1,11 +1,21 @@
-import React, {FC, useEffect, useState} from "react";
-import {Col, Row, Table} from "react-bootstrap";
-import allProducts from '../../../assets/data/products.json';
+import React, { FC, useEffect, useState } from "react";
+import { Col, Row, Spinner, Table } from "react-bootstrap";
 import ProductTableItem from "./ProductTableItem";
-import {FiArrowLeft, FiArrowRight} from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import { GET_PRODUCTS } from "../../../api/product";
+import { useQuery } from "@apollo/client";
+import { toast } from "react-toastify";
+import Skeleton from "../common/Skeleton";
 
 const ProductsTable: FC = () => {
-    const products = allProducts.products;
+    // const products = allProducts.products;
+    const { data, loading, error } = useQuery(GET_PRODUCTS);
+    const products = data?.prodcuts || [];
+
+
+    if (error) {
+        toast.error("Data is not loading")
+    }
 
     const productCount = products.length;
     const productsPerPage = 6;
@@ -27,7 +37,7 @@ const ProductsTable: FC = () => {
     }
     const range = (start: number, end: number) => {
         let length = end - start + 1;
-        return Array.from({length}, (_, idx) => idx + start);
+        return Array.from({ length }, (_, idx) => idx + start);
         // return [...Array(end - start + 1).keys()].map(x => x + start);
     };
 
@@ -93,21 +103,26 @@ const ProductsTable: FC = () => {
         if (currentPageNumberElement === null) return;
         currentPageNumberElement.classList.add('active-page-number');
     }
-    //===================================
 
 
     const renderProducts = () => {
-        return (
-            <tbody>
-            {
-                filteredProducts.map((product, index) => {
-                    if (index < 6) {
-                        return <ProductTableItem product={product} key={index}/>
+        if (loading) {
+            return (
+                <Skeleton className="my-3 products-table-Skeleton w-100" />
+            )
+        } else {
+            return (
+                <tbody>
+                    {
+                        data?.products.map((product, index) => {
+                            if (index < 6) {
+                                return <ProductTableItem product={product} key={index} />
+                            }
+                        })
                     }
-                })
-            }
-            </tbody>
-        );
+                </tbody>
+            );
+        }
     };
 
     return (
@@ -115,14 +130,14 @@ const ProductsTable: FC = () => {
             <Col>
                 <Table bordered hover>
                     <thead>
-                    <tr>
-                        <th className="bold  py-3 px-0">Product Name</th>
-                        <th className="bold  py-3 px-0">Category</th>
-                        <th className="bold  py-3 px-0">Price</th>
-                        <th className="bold  py-3 px-0">Quantity</th>
-                        <th className="bold  py-3 px-0">Inventory</th>
-                        <th className="bold  py-3 px-0">Action</th>
-                    </tr>
+                        <tr>
+                            <th className="bold  py-3 px-0">Product Name</th>
+                            <th className="bold  py-3 px-0">Category</th>
+                            <th className="bold  py-3 px-0">Price</th>
+                            <th className="bold  py-3 px-0">Quantity</th>
+                            <th className="bold  py-3 px-0">Inventory</th>
+                            <th className="bold  py-3 px-0">Action</th>
+                        </tr>
                     </thead>
                     {renderProducts()}
                 </Table>
@@ -130,7 +145,7 @@ const ProductsTable: FC = () => {
                 <Row className='bottom-0 mb-4 pb-2  d-flex pe-0 position-absolute pagination-group'>
                     <Col lg={2}> </Col>
                     <Col className='d-flex justify-content-end align-items-center pe-3' lg={10}>
-                        <FiArrowLeft color='#0C2556' size='23px' id='prev' onClick={handleOnPaginationArrowClicked}/>
+                        <FiArrowLeft color='#0C2556' size='23px' id='prev' onClick={handleOnPaginationArrowClicked} />
                         {
                             pageNumbers.map((pageNumber) => {
                                 return <label
@@ -142,7 +157,7 @@ const ProductsTable: FC = () => {
                                 </label>;
                             })
                         }
-                        <FiArrowRight color='#0C2556' size='23px' id='next' onClick={handleOnPaginationArrowClicked}/>
+                        <FiArrowRight color='#0C2556' size='23px' id='next' onClick={handleOnPaginationArrowClicked} />
                     </Col>
                 </Row>
 

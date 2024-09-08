@@ -37,7 +37,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Combine with other Apollo links
 const httpLink = new HttpLink({
-    uri: 'http://192.168.1.6:4500/api', // Apollo Server is served from port 4000
+    uri: 'http://192.168.1.4:4500/api', // Apollo Server is served from port 4000
     headers: {
         'apollo-require-preflight': 'true',
     }

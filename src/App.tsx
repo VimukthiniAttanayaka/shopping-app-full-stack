@@ -5,6 +5,7 @@ import {ICart} from './Types/ShoppingTypes';
 // import {useToasts} from 'react-toast-notifications';
 import ECommerceApp from './view/ECommerceApp';
 import AdminApp from "./view/AdminApp";
+const UpdateProduct = React.lazy(() => import("./components/Admin/Products/UpdateProduct"));
 const Home = React.lazy(() => import("./components/pages/Home"));
 const AboutUs = React.lazy(() => import("./components/pages/staticpages/AboutUs"));
 const ContactUs = React.lazy(() => import("./components/pages/staticpages/ContactUs"));
@@ -69,6 +70,7 @@ const App = () => {
                 <Route path='/admin' element={<AdminApp/>}>
                     <Route path='/admin/products' element={<Products/>}/>
                     <Route path='/admin/products/addproduct' element={<AddProduct/>}/>
+                    <Route path='/admin/products/updateProduct/:id' element={<UpdateProduct/>}/>
                     <Route path='/admin/orders' element={<Orders/>}/>
                     <Route path='/admin/orders/view-order' element={<ViewOrder/>}/>
                 </Route>

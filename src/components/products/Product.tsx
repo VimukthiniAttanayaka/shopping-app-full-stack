@@ -51,7 +51,7 @@ const Product: React.FC<ProductProps> = (props) => {
         setCartBtnBackground("add-cart-btn-u");
     }
     return (
-        <Col xs={6} md={4} lg={url === '/admin/products/addproduct' ? 6 : 3}
+        <Col xs={6} md={4} lg={url.includes('/admin/products') ? 6 : 3}
              className={url === '/admin/products/addproduct' ? 'mb-1 mb-sm-2 products ps-0' : 'mt-1 mb-1 mb-sm-2 products'}>
             <Row className='product-item'>
                 <Col sm={12} className='product-img'>

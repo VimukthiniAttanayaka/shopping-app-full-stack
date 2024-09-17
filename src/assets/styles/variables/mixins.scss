@@ -1,3 +1,5 @@
+@import "variables";
+
 @mixin respond($breakpoint) {
   @if $breakpoint == mobile {
     @media (max-width: 576px) {
@@ -17,6 +19,19 @@
   @if $breakpoint == large-screen {
     @media (max-width: 1500px) {
       @content
+    }
+  }
+}
+
+@for $i from 1 through length($font-sizes) {
+  .f-s#{$i} {
+    font-size: nth($font-sizes, $i);
+  }
+
+  @for $j from 1 through length($font-weights) {
+    .f-s#{$i}-w#{$j} {
+      font-size: nth($font-sizes, $i);
+      font-weight: nth($font-weights, $j);
     }
   }
 }

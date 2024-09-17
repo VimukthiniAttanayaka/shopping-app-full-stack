@@ -10,7 +10,6 @@ const ChangeShippingAddressSection: FC = () => {
 
     const handleOnRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
         const radioID: string = e.target.id;
-        console.log(radioID)
         switch (radioID) {
             case 'sameAddress':
                 setIsSameUserAddress(true);

@@ -1,9 +1,9 @@
 export interface IProduct {
     name: string,
     id?: string,
-    price: number | "",
-    discountedPrice: number | "",
-    quantity: number | "",
+    quantity: string | undefined,
+    price: string | undefined,
+    discountedPrice: string | undefined,
     category: string,
     image: string,
     description?: string

@@ -3,12 +3,13 @@ import {IProduct} from "../../../Types/IProduct.tsx";
 import {Col, Nav, Navbar, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {ChevronRight} from "react-feather";
-import {useMutation} from "@apollo/client";
-import {ADD_PRODUCT} from "../../../api/product.ts";
+import {useMutation, useQuery} from "@apollo/client";
+import {ADD_PRODUCT, GET_PRODUCTS} from "../../../api/product.ts";
 import {useEffect} from "react";
 import {toast} from "react-toastify";
 
 const AddProduct = () => {
+    const {refetch: productsRefetch} = useQuery(GET_PRODUCTS);
     const productInitialState: IProduct = {
         name: "",
         quantity: '',
@@ -28,8 +29,9 @@ const AddProduct = () => {
 
     useEffect(() => {
         if(addData) {
-            if (addData.editProduct) {
+            if (addData.createProduct) {
                 toast.success("Product added successfully")
+                productsRefetch();
             } else {
                 toast.error("Product add failed")
             }

@@ -3,7 +3,7 @@ import {IProduct} from "../../../Types/IProduct.tsx";
 import {Col, Nav, Navbar, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {ChevronRight} from "react-feather";
-import {EDIT_PRODUCT, GET_PRODUCT} from "../../../api/product.ts";
+import {EDIT_PRODUCT, GET_PRODUCT, GET_PRODUCTS} from "../../../api/product.ts";
 import {useMutation, useQuery} from "@apollo/client";
 import {useEffect} from "react";
 import {toast} from "react-toastify";
@@ -25,6 +25,7 @@ const UpdateProduct = () => {
         category: product?.category ||"",
         image: product?.image ||"",
     }
+    const {refetch: productsRefetch} = useQuery(GET_PRODUCTS);
     const [editProduct, { data: editData }] = useMutation(EDIT_PRODUCT);
 
     const handleSubmit = (values: any) => {
@@ -37,6 +38,7 @@ const UpdateProduct = () => {
         if(editData) {
             if (editData.editProduct) {
                 toast.success("product updated successfully")
+                productsRefetch();
             } else {
                 toast.error("Product update failed")
             }

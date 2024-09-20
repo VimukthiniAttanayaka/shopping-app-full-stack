@@ -2,8 +2,8 @@ import {Button, Col, Modal, Row} from "react-bootstrap";
 import {Edit2, Trash2} from "react-feather";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {useMutation} from "@apollo/client";
-import {DELETE_PRODUCT} from "../../../../api/product.ts";
+import {useMutation, useQuery} from "@apollo/client";
+import {DELETE_PRODUCT, GET_PRODUCTS} from "../../../../api/product.ts";
 import {toast} from "react-toastify";
 
 type TProductItem = {
@@ -14,11 +14,13 @@ const ActionCell = ({productItem}: {productItem: TProductItem}) => {
     const [modalShow, setModalShow] = useState(false);
 
     const [deleteProduct, {data: deleteData}] = useMutation(DELETE_PRODUCT)
+    const {refetch: productsRefetch} = useQuery(GET_PRODUCTS);
 
     useEffect(() => {
         if(deleteData) {
             if (deleteData.deleteProduct) {
                 toast.success("Product deleted successfully")
+                productsRefetch();
             } else {
                 toast.error("Product delete failed")
             }

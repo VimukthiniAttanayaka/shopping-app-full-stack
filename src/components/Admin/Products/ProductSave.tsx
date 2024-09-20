@@ -10,13 +10,14 @@ import {ErrorMessage, Formik} from 'formik';
 import * as Yup from 'yup';
 import {toast} from "react-toastify";
 import {getProductImageLink} from "../../../utills";
+import CategoryDataList from "../../../Types/CategoryDateList.tsx";
 
-const categoryOptions = [
-    {value: 'grocery', label: 'Grocery'},
-    {value: 'food', label: 'Food'},
-    {value: 'pharmacy', label: 'Pharmacy'},
-    {value: 'electronic', label: 'Electronic'}
-];
+const categoryOptions = CategoryDataList.filter(
+    (category) => category.name !== 'All'
+).map((category) => ({
+    value: category.name.toLowerCase(),
+    label: category.name,
+}));
 
 type ProductSaveProps = {
     productInitialState: IProduct

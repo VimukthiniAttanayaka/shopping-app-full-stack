@@ -22,28 +22,12 @@ const Product: React.FC<ProductProps> = (props) => {
         setURL(location.pathname);
     }, [location]);
 
-    // var imageLink;
-    //
-    // if (product.image === "carrot") {
-    //     imageLink = carrot;
-    // } else if (product.image === "coconut") {
-    //     imageLink = coconut;
-    // } else if (product.image === "noImage") {
-    //     imageLink = no_image;
-    // } else {
-    //     imageLink = product.image;
-    // }
-
     const handleOnQuantityChanged = (num: string) => {
         setQuantity(parseInt(num));
     }
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        // const newItem: ICart = {name: product.name, price: product.price, quantity: quantity, img: product.image};
-
-        // onCartItemCreate(newItem);
-        // setQuantity(1);
     }
 
     const cartAdd = () => {
@@ -51,8 +35,8 @@ const Product: React.FC<ProductProps> = (props) => {
         setCartBtnBackground("add-cart-btn-u");
     }
     return (
-        <Col xs={6} md={4} lg={url.includes('/admin/products') ? 6 : 3}
-             className={url === '/admin/products/addproduct' ? 'mb-1 mb-sm-2 products ps-0' : 'mt-1 mb-1 mb-sm-2 products'}>
+        <div
+             className={url === '/admin/products/addproduct' ? 'mb-1 mb-sm-2 products p-0' : 'mt-1 mb-1 mb-sm-2 products p-0'}>
             <Row className='product-item'>
                 <Col sm={12} className='product-img'>
                     <Image src={product.image} alt="product"/>
@@ -63,15 +47,15 @@ const Product: React.FC<ProductProps> = (props) => {
                 <Col sm={12} className='product-price sm-1 px-4'>
                     <Row>
                         <Col xs={6} className='old-price ps-2'>
-                            {/*<p>Rs.{product.oldPrice}</p>*/}
+                            <p>Rs.{product.price}</p>
                         </Col>
                         <Col xs={6} className='new-price pe-2'>
-                            <p>Rs.{product.price}</p>
+                            <p>Rs.{product.discountedPrice}</p>
                         </Col>
                     </Row>
                 </Col>
                 <Col className='px-4 mb-1'>
-                    <Form noValidate onSubmit={handleSubmit} className='product-quentity'>
+                    <Form noValidate onSubmit={handleSubmit} className='product-quantity'>
                         <Row className='mb-1'>
                             <Col xs={12} sm={5} md={4} lg={6} className="ps-2">
                                 <Form.Group>
@@ -91,7 +75,7 @@ const Product: React.FC<ProductProps> = (props) => {
                     </Form>
                 </Col>
             </Row>
-        </Col>
+        </div>
     )
 }
 export default Product;

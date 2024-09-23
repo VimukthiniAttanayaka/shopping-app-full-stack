@@ -27,18 +27,21 @@ export const DELETE_PRODUCT = gql`
 
 
 export const GET_PRODUCTS = gql`
-  query getProducts {
-    products: getProducts { 
-        id
-        name
-        price
-        discountedPrice
-        quantity
-        category
-        image
-        description
+query GetProducts($offset: Int, $limit: Int, $category: String, $query: String) {
+  getProducts(offset: $offset, limit: $limit, category: $category, query: $query) {
+    total
+    products {
+      id
+      name
+      price
+      discountedPrice
+      quantity
+      category
+      image
+      description
     }
   }
+}
 `;
 
 export const GET_PRODUCT = gql`

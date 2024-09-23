@@ -6,41 +6,53 @@
     color: $category-header-font-color;
   }
 
+  .category-col {
+    width: fit-content;
 
-  .category-item:enabled {
-    background-color: red !important;
-  }
-
-  .card {
-    cursor: pointer;
-    border-radius: 10px;
-    padding: 10px;
-    width: 180px;
-    height: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .card-img {
-      width: 80%;
-      height: auto;
+    .category-item {
+      cursor: pointer;
+      border-radius: 10px;
       padding: 10px;
-      object-fit: contain;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+      align-items: center;
+
+      .card-img {
+        width: 80%;
+        height: auto;
+        padding: 10px;
+        object-fit: contain;
+      }
+    }
+
+    .active-item {
+      background-color: red !important;
     }
   }
-
   .card:hover {
     background-color: #a7ee75;
   }
 
-  @media (max-width: $md-screen-size) {
-    .card {
-      height: 110px !important;
-      margin: 5px;
-      padding: 1px;
-    }
-
+  @media (max-width: $lg-screen-size) {
     .category-item {
+      display: flex;
+      flex-direction: column !important;
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+
+      .card-img {
+        max-width: 100% !important;
+        padding-bottom: 5px;
+      }
+    }
+  }
+  @media (max-width: $md-screen-size) {
+    .category-item {
+      height: 110px !important;
       display: flex;
       flex-direction: column !important;
       justify-content: center;
@@ -53,44 +65,30 @@
       }
 
       .card-img {
-        max-width: 100% !important;
-        height: 70px !important;
-        padding-bottom: 0;
-      }
-    }
-  }
-  @media (max-width: $lg-screen-size) {
-    .category-item {
-      display: flex;
-      flex-direction: column !important;
-      justify-content: center;
-      justify-items: center;
-      align-items: center;
-      margin: 0 8px;
-
-      .card-img {
-        max-width: 100% !important;
-        padding-bottom: 5px;
+        width: 100% !important;
+        padding: 0 !important;
       }
     }
   }
   @media (max-width: $xs-screen-size) {
-    .card {
+    .category-item {
       display: flex;
       flex-direction: row;
       align-items: center;
-      width: 90%;
       height: 50px;
-    }
 
 
-    .card-title {
-      font-size: large;
-      font-weight: bold;
-      width: 100%;
+      .card-title {
+        font-size: large;
+        font-weight: bold;
+        width: 100%;
+      }
+
+      .card-img {
+        width: 100px;
+      }
     }
   }
-
 }
 
 

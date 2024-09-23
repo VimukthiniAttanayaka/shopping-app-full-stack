@@ -13,6 +13,7 @@ type HomeProps = {
 const Home: React.FC<HomeProps> = (props) => {
     const {onCartItemCreate} = props;
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
+    const [searchValue, setSearchValue] = useState('');
 
     const [categories] = useState(CategoryDateList);
     const myRef = useRef(null);
@@ -25,18 +26,25 @@ const Home: React.FC<HomeProps> = (props) => {
         setSelectedCategory(category);
     }
 
+    const handleOnSearch = (value: string) => {
+        setSelectedCategory('All')
+        setSearchValue(value)
+    }
+
     return (
         <Row className=''>
             <Col xs={12} className="">
                 <PromotionSection setProductSectionVisible={executeScroll}/>
-                <SearchBar/>
-                <div ref={myRef}>
-                    <Row className='mx-lg-5'>
+                <SearchBar handleOnSearch={handleOnSearch}/>
+                <div ref={myRef} style={{maxWidth: 1300, margin: "auto"}}>
+                    {!searchValue && <Row className='mx-lg-5 mb-5'>
                         <Col className='mx-lg-4'>
-                            <CategoryList items={categories} onCategoryChange={handleOnCategoryChange}/>
+                            <CategoryList selectedCategory={selectedCategory} items={categories}
+                                          onCategoryChange={handleOnCategoryChange}/>
                         </Col>
-                    </Row>
-                    <ProductSection onCartItemCreate={onCartItemCreate} selectedCategory={selectedCategory}/>
+                    </Row>}
+                    <ProductSection searchValue={searchValue} onCartItemCreate={onCartItemCreate}
+                                    selectedCategory={selectedCategory}/>
                 </div>
             </Col>
         </Row>

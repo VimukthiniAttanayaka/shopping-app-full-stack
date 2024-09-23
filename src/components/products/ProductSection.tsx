@@ -1,78 +1,72 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {ICart} from '../../Types/ShoppingTypes';
-import productsList from '../../assets/data/products.json';
-import {useDispatch} from "react-redux";
-import {setProducts} from "../../redux/slices/ProductSlice";
-import {useAppSelector} from "../../hooks/hooks";
 import {IProduct} from "../../Types/IProduct";
 import Product from "./Product";
-import {Row} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 import {useQuery} from "@apollo/client";
 import {GET_PRODUCTS} from "../../api/product.ts";
 import {toast} from "react-toastify";
 import {getProductImageLink} from "../../utills";
-import NoData from "../common/NoData.tsx";
+import NoData from "../common/NoData";
+import Skeleton from "../common/Skeleton";
 
 type ProductSectionProps = {
-    selectedCategory: String,
+    searchValue: string
+    selectedCategory: string,
     onCartItemCreate: (newItem: ICart) => void;
 }
 
 
 const ProductSection: React.FC<ProductSectionProps> = (props) => {
-    const {data, loading, error} = useQuery(GET_PRODUCTS);
-
+    const {onCartItemCreate, selectedCategory, searchValue} = props;
+    const {data, loading, error, fetchMore} = useQuery(GET_PRODUCTS, {
+        variables: {
+            category: selectedCategory.toLowerCase(),
+            query: searchValue,
+        },
+    });
 
     if (error) {
         toast.error("Data is not loading")
     }
 
-    console.log(data)
-    const products = data?.products ?? [];
-    const [filteredProducts, setFilteredProducts] = useState<IProduct[]>(products);
-    const {onCartItemCreate, selectedCategory} = props;
-
+    const products = data?.getProducts?.products ?? [];
 
     useEffect(() => {
-        filterProducts();
-    }, [selectedCategory]);
+        fetchMore({variables: {query: searchValue}})
+    },[searchValue])
 
-    const filterProducts = () => {
-        let newProductsList = null;
-
-        if (selectedCategory === 'All') {
-            setFilteredProducts(products);
-            return;
-        }
-        newProductsList = products.filter(products => products.category === selectedCategory.toLowerCase()).map((product: IProduct) => {
-            return product;
-        });
-        setFilteredProducts(newProductsList);
-    }
-
-    useEffect(() => {
-        filterProducts()
-    },[products])
-
-    if (filteredProducts.length === 0) {
+    if (loading) {
         return (
-                <NoData message={'No products found'}/>
+            <Row className='d-flex justify-content-center mb-5'>
+                {[...Array(4)].map((index: number) => (
+                        <Col xs={6} sm={4} md={4} lg={3} key={index}>
+                            <Skeleton className='products-section-skeleton'/>
+                        </Col>
+                    )
+                )}
+            </Row>
+        )
+    } else  if (products.length == 0) {
+        return (
+            <NoData message={'No products found'}/>
+        );
+    } else {
+        return (
+            <Row className='d-flex justify-content-center mb-5'>
+                {products.map((product: IProduct, index: number) => {
+                        return <Col
+                            xs={6} sm={4} md={4} lg={3} key={index}
+                        ><Product
+                            product={{...product, image: getProductImageLink(product.image)}}
+                            index={index}
+                            onCartItemCreate={onCartItemCreate}
+                        /></Col>
+                    }
+                )}
+            </Row>
         );
     }
-
-    return (
-        <Row className='product mb-5 mx-0 mx-lg-5 px-lg-4'>
-            {filteredProducts.map((product: IProduct, index: number) => {
-                    return <Product
-                        product={{...product, image: getProductImageLink(product.image)}}
-                        index={index}
-                        key={index}
-                        onCartItemCreate={onCartItemCreate}
-                    />
-                }
-            )}
-        </Row>
-    );
 }
 
 export default ProductSection;

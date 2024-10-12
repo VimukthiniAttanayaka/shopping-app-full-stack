@@ -25,9 +25,6 @@ const InputGroup:FC<FormGroupProps> = (props) => {
         placeholder,
         value,
         min,
-        as,
-        allowNegative,
-        thousandSeparator,
         rows,
         name
     } = props;
@@ -41,9 +38,6 @@ const InputGroup:FC<FormGroupProps> = (props) => {
                 onChange={handleOnChange}
                 disabled={isDisabled}
                 min={min}
-                as={as}
-                // allowNegative={allowNegative}
-                // thousandSeparator={thousandSeparator}
                 rows={rows}
                 name={name}
             />

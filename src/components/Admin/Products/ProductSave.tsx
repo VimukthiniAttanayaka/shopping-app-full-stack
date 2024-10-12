@@ -108,9 +108,8 @@ const ProductSave: React.FC<ProductSaveProps> = (props) => {
                                     <InputGroup
                                         label={"PRODUCT QUANTITY"}
                                         type={"number"}
+                                        min="0"
                                         placeholder="Enter Product Quantity"
-                                        // min='0'
-                                        // as={NumberFormat}
                                         value={values.quantity}
                                         handleOnChange={handleChange}
                                         isDisabled={isDisabled}
@@ -122,11 +121,8 @@ const ProductSave: React.FC<ProductSaveProps> = (props) => {
                                     <InputGroup
                                         label={"PRICE"}
                                         type={"number"}
+                                        min="0"
                                         placeholder="Enter Product Price"
-                                        // as={NumberFormat}
-                                        // allowNegative={false}
-                                        // thousandSeparator={true}
-                                        // isRequired={true}
                                         value={values.price}
                                         handleOnChange={handleChange}
                                         isDisabled={isDisabled}
@@ -159,13 +155,11 @@ const ProductSave: React.FC<ProductSaveProps> = (props) => {
                                 </Col>
                                 <Col lg={6}>
                                     <InputGroup
+                                        min="0"
                                         label={"DISCOUNTED PRICE"}
                                         type={"number"}
                                         placeholder="Enter discounted Price"
                                         value={values.discountedPrice}
-                                        // as={NumberFormat}
-                                        thousandSeparator={true}
-                                        allowNegative={false}
                                         handleOnChange={handleChange}
                                         isDisabled={isDisabled}
                                         name="discountedPrice"

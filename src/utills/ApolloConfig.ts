@@ -16,6 +16,8 @@
 import { ApolloClient, InMemoryCache, ApolloLink, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import {toast} from "react-toastify";
+import {getLocal} from "./index.ts";
+import {AUTH_KEY} from "../static/static.ts";
 
 // Error link to handle errors globally
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -40,6 +42,7 @@ const httpLink = new HttpLink({
     uri: 'http://localhost:4500/api', // Apollo Server is served from port 4000
     headers: {
         'apollo-require-preflight': 'true',
+        authorization: getLocal(AUTH_KEY) || ''
     }
 });
 

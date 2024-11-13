@@ -42,6 +42,11 @@ $apply-green: #4CAF50;
                 -webkit-appearance: none;
                 box-shadow: none !important;
             }
+            .data-field-feedback {
+                font-size: 12px;
+                text-align: start;
+                margin: 2px;
+            }
         }
         .data-field-icon {
             background-color: #f5f8f7;
@@ -104,6 +109,12 @@ $apply-green: #4CAF50;
                 outline: 0 !important;
                 -webkit-appearance: none;
                 box-shadow: none !important;
+            }
+
+            .data-field-feedback {
+                font-size: 12px;
+                text-align: start;
+                margin: 2px;
             }
         }
         .data-field-icon {

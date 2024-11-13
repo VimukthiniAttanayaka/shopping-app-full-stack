@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {Col, Container, Nav, Navbar, Row} from "react-bootstrap";
 import {PhoneCall, Truck, User} from "react-feather";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
+import {logout} from "../../utills/logout.ts";
 
 const ContactBar: React.FC = () => {
     const [show, setShow] = useState(true);
@@ -12,6 +15,9 @@ const ContactBar: React.FC = () => {
             setShow(true)
         }
     }
+
+    const isAuthorized = useSelector((state:RootState) => state.auth.isAuthorized)
+
     return (
         <Row>
             <Col xs={12} className="ms-sm-0 ps-sm-0 ps-3 me-xl-4">
@@ -28,20 +34,30 @@ const ContactBar: React.FC = () => {
                                     <Truck className="truck"/>
                                     <span className="ms-2 colour-gray ">Delivery Areas</span>
                                 </Nav.Item>
-                                <Nav.Item className="mx-lg-3 mt-2 mt-md-0 my-account">
-                                    <User/>
-                                    <span className="ms-1 colour-gray"><Link to={'/admin/products'} className='href'>
+
+                                {isAuthorized ?
+                                    <>
+                                    <Nav.Item className="mx-lg-3 mt-2 mt-md-0 my-account">
+                                        <User/>
+                                        <span className="ms-1 colour-gray"><Link to={'/admin/products'} className='href'>
                                         My Account</Link></span>
-                                </Nav.Item>
-                                <Nav.Item className="register-button ms-lg-2 d-flex float-end mt-2 mt-md-0
+                                    </Nav.Item>
+                                    <Nav.Item className="mx-lg-3 mt-2 mt-md-0 logout-button" onClick={logout}>
+                                        Logout
+                                    </Nav.Item>
+                                    </>
+                                    :
+                                    <><Nav.Item className="register-button ms-lg-2 d-flex float-end mt-2 mt-md-0
                                                      align-items-center">
                                     <span className="px-2 mx-2"><Link to={"/signuppage"}
                                                                       className="href login-btn">Register</Link></span>
-                                </Nav.Item>
-                                <Nav.Item className="button-login ps-lg-2 ms-lg-3 me-2 d-flex float-end mt-2 mt-md-0
+                                    </Nav.Item>
+                                        <Nav.Item className="button-login ps-lg-2 ms-lg-3 me-2 d-flex float-end mt-2 mt-md-0
                                                      align-items-center">
-                                    <span><Link to={"/loginpage"} className="href login-btn">Login</Link></span>
-                                </Nav.Item>
+                                            <span><Link to={"/loginpage"} className="href login-btn">Login</Link></span>
+                                        </Nav.Item>
+                                    </>
+                                }
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

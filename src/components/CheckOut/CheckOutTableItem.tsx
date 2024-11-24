@@ -1,41 +1,32 @@
-import {BaseSyntheticEvent, FC, useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {Image} from "react-bootstrap";
 import {MinusCircle, PlusCircle, Trash} from "react-feather";
-import {ICart} from "../../Types/ShoppingTypes";
 import NumberFormat from 'react-number-format';
-import {carrot, coconut} from "../../assets/images/images";
+import {ICartItem} from "../../Types/ICartItem.tsx";
+import {deleteItem} from "../../redux/slices/OrderSlice.ts";
+import {useDispatch} from "react-redux";
 
 type checkOutTableItemProps = {
-    onRemoveItem: (index: number) => void;
-    cartItem: ICart;
+    cartItem: ICartItem;
     index: number;
 }
 const CheckOutTableItem: FC<checkOutTableItemProps> = (props) => {
-    const {onRemoveItem, cartItem, index,} = props;
+    const {cartItem, index,} = props;
     const unitPrice: number = parseFloat(cartItem.price); //This should be replaced with the real unit value
     const [itemQty, setItemQty] = useState<number>(cartItem.quantity);
     const [itemTotal, setItemTotal] = useState<number>(itemQty * unitPrice)
-
-    let image;
-    if (cartItem.img === "carrot") {
-        image = carrot;
-    } else if (cartItem.img === "coconut") {
-        image = coconut;
-    }
+    const dispatch = useDispatch();
     //Item quantity  increase handler
-    const handleOnItemQtyIncrease = (event: BaseSyntheticEvent) => {
-        console.log(event)
-        const newQty = itemQty + 1;
-        setItemQty(newQty);
+    const handleOnItemQtyIncrease = () => {
+        // TODO: set the max limit
+        setItemQty(itemQty + 1);
     }
 
     //Item quantity  decrease handler
     const handleOnItemQtyDecrease = () => {
-        if (itemQty === 0) {
-            return;
+        if (itemQty > 1) {
+            setItemQty(itemQty - 1);
         }
-        const newQty = itemQty - 1;
-        setItemQty(newQty);
     }
 
     //handle item total on quantity change
@@ -44,8 +35,8 @@ const CheckOutTableItem: FC<checkOutTableItemProps> = (props) => {
         setItemTotal(newItemTotal);
     }, [itemQty])
 
-    const handleOnRemoveItemClick = () => {
-        onRemoveItem(index);
+    const handleOnRemoveItemClick = (id: string) => {
+        dispatch(deleteItem(id))
     }
 
 
@@ -53,7 +44,7 @@ const CheckOutTableItem: FC<checkOutTableItemProps> = (props) => {
         <tr key={index} className='checkout-table-details'>
             <td>{index + 1}</td>
             <td>
-                <Image src={image} className='checkout-table-item-image' fluid={false}/>
+                <Image src={cartItem.image} className='checkout-table-item-image' fluid={false}/>
             </td>
             <td>{cartItem.name}</td>
             <td className='px-lg-5'>
@@ -68,7 +59,7 @@ const CheckOutTableItem: FC<checkOutTableItemProps> = (props) => {
             <td><NumberFormat className='checkout-number-format' prefix="Rs." value={itemTotal} decimalScale={2}
                               fixedDecimalScale={true}/></td>
             <td className='delete-trash'><Trash className="hover-pointer checkout-remove"
-                                                onClick={handleOnRemoveItemClick}/></td>
+                                                onClick={() => handleOnRemoveItemClick(cartItem.id)}/></td>
         </tr>
 
     )

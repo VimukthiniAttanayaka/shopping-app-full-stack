@@ -23,10 +23,10 @@ const ContactBar: React.FC = () => {
             <Col xs={12} className="ms-sm-0 ps-sm-0 ps-3 me-xl-4">
                 <Navbar expand="lg" className="contact-bar float-end py-lg-0">
                     <Container className='pe-lg-0'>
-                        <Navbar.Brand href="#home" className='py-1'>
+                        <Nav.Item className='py-1'>
                             <a href="tel:+94 112 123456" className={show ? "href" : "href contact-number"}>
                                 <PhoneCall className='me-2'/> +94 112 123456</a>
-                        </Navbar.Brand>
+                        </Nav.Item>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={collapse}/>
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="me-auto">
@@ -39,7 +39,7 @@ const ContactBar: React.FC = () => {
                                     <>
                                     <Nav.Item className="mx-lg-3 mt-2 mt-md-0 my-account">
                                         <User/>
-                                        <span className="ms-1 colour-gray"><Link to={'/admin/products'} className='href'>
+                                        <span className="ms-1 colour-gray"><Link to={'/my-account'} className='href'>
                                         My Account</Link></span>
                                     </Nav.Item>
                                     <Nav.Item className="mx-lg-3 mt-2 mt-md-0 logout-button" onClick={logout}>

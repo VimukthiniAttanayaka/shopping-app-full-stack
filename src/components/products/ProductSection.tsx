@@ -39,7 +39,7 @@ const ProductSection: React.FC<ProductSectionProps> = (props) => {
     if (loading) {
         return (
             <Row className='d-flex justify-content-center mb-5'>
-                {[...Array(4)].map((index: number) => (
+                {[...Array(4)].map((_:undefined, index: number) => (
                         <Col xs={6} sm={4} md={4} lg={3} key={index}>
                             <Skeleton className='products-section-skeleton'/>
                         </Col>

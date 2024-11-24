@@ -1,49 +1,98 @@
-import {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 import {Button, Col, Form, FormControl, Image, Row, Table} from "react-bootstrap";
 import CheckOutTableItem from "../CheckOut/CheckOutTableItem";
-import {ICart} from "../../Types/ShoppingTypes";
 import NumberFormat from "react-number-format";
-import ShippingForm from "../CheckOut/ShippingForm";
+import BillingForm from "../CheckOut/BillingForm.tsx";
 import banner from '../../assets/images/banners/checkoutPageBanner.webp';
 import ChangeShippingAddressSection from "../CheckOut/ChangeShippingAddressSection";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
+import {ICartItem} from "../../Types/ICartItem.tsx";
+import {DeliveryCharge} from "../../static/data.ts";
+import {Discounts} from "../../static/enums.ts";
+import {useMutation} from "@apollo/client";
+import {CREATE_ORDER} from "../../api/order.ts";
 
-type CheckoutProps = {
-    cartItems: ICart[];
-    setCartItems: (items: ICart[]) => void;
+interface ShippingFormHandles {
+    validateForm: () => Promise<any>;
+    getFormValues: () => any;
 }
-const CheckOut: FC<CheckoutProps> = (props) => {
-    const {cartItems, setCartItems} = props;
+
+const CheckOut: FC = () => {
+    const cartItems = useSelector((state: RootState) => state.orders.cart)
+    const [createOrder, {data: createData}] = useMutation(CREATE_ORDER)
     const [discountCode, setDiscountCode] = useState<string>('')
+    const [discountByCode, setDiscountByCode] = useState<number>(0)
     const [colSpan1, setColSpan1] = useState<number>(3);
     const [colSpan2, setColSpan2] = useState<number>(4);
     const [cartTotal] = useState<number>(100);
 
-    const handleOnItemRemoved = (index: number) => {
-        cartItems.splice(index, 1);
-        setCartItems([...cartItems]);
-    }
-
 
     const renderCartItems = () => {
-        return cartItems.map((item, index) => {
-            return <CheckOutTableItem cartItem={item} onRemoveItem={handleOnItemRemoved} index={index}/>;
+        return cartItems.map((item: ICartItem, index) => {
+            return <CheckOutTableItem cartItem={item} index={index} key={index}/>;
         })
     }
 
     //discount code submit handler
     const handleOnDiscountCodeSubmit = (e: any) => {
         e.preventDefault();
-        console.log(discountCode)
+
+        if(Object.keys(Discounts).includes(discountCode)){
+            setDiscountByCode(Discounts[discountCode])
+        }
     }
 
     //Discount code change handler
-    const handleOnDiscountCodeChange = (e: any) => {
-        setDiscountCode(e.target.value);
+    const handleOnDiscountCodeChange = (event: any) => {
+        setDiscountCode(event.target.value)
     }
 
+    const billingFormRef = useRef<ShippingFormHandles | null>(null);
     //Form submit button handler
-    const handleOnFormSubmit = (event: any) => {
-        console.log(event)
+    const handleOnFormSubmit = async () => {
+        if (billingFormRef.current) {
+            const errors = await billingFormRef.current.validateForm();
+            const isFormValid = Object.keys(errors).length === 0;
+
+            if (isFormValid) {
+                const billingValues = billingFormRef.current.getFormValues();
+                const order = {
+                    "placeOrderInput": {
+                        "billingAddress": {
+                            "address": billingValues.address,
+                            "city": billingValues.city,
+                            "contact": billingValues.contact,
+                            "country": billingValues.selectedCountry.label,
+                            "email": billingValues.email,
+                            "fullName": billingValues.fullName,
+                            "postalCode": billingValues.postalCode
+                        },
+                        "deliveryCharge": DeliveryCharge,
+                        "discountCode": discountByCode ? discountCode : "",
+                        "orderList": cartItems.map((item: ICartItem) => ({
+                            "productId": item.id,
+                            "quantity": item.quantity
+                        })),
+                        "shippingAddress": {
+                            "address": billingValues.address,
+                            "city": billingValues.city,
+                            "contact": billingValues.contact,
+                            "country": billingValues.selectedCountry.label,
+                            "email": billingValues.email,
+                            "fullName": billingValues.fullName,
+                            "postalCode": billingValues.postalCode
+                        }
+                    }
+                }
+                createOrder({variables: order})
+                console.log(order)
+
+
+            } else {
+                console.error("Form Validation Errors:", errors);
+            }
+        }
     }
 
     // create an event listener
@@ -95,7 +144,7 @@ const CheckOut: FC<CheckoutProps> = (props) => {
                                         <span className="fs-5 me-3 discount-code-text">Have a discount code? </span>
                                         <FormControl type="text" className="discount-input me-3" value={discountCode}
                                                      onChange={handleOnDiscountCodeChange}/>
-                                        <Button className="signing-button px-4" type="submit">APPLY</Button>
+                                        <Button className="signing-button px-4" type="button">APPLY</Button>
                                     </Form>
                                 </td>
                             </tr>
@@ -105,7 +154,7 @@ const CheckOut: FC<CheckoutProps> = (props) => {
                                 <td colSpan={2} className="px-0">
                                     <NumberFormat className='checkout-number-format-delivery bg-transparent'
                                                   prefix="Rs."
-                                                  value={400.99}
+                                                  value={DeliveryCharge}
                                                   decimalScale={2}
                                                   fixedDecimalScale={true}
                                                   disabled
@@ -153,14 +202,14 @@ const CheckOut: FC<CheckoutProps> = (props) => {
                                 <p className="border-bottom py-3 mx-3">
                                     Shipping and Billing Address
                                 </p>
-                                <ShippingForm/>
+                                <BillingForm ref={billingFormRef}/>
                             </Col>
                             <Col md={12} className="px-0 mt-4 mt-lg-4">
                                 <ChangeShippingAddressSection/>
                             </Col>
                             <Col md={12} className='d-flex justify-content-end p-0'>
-                                <Button className="signing-button mt-3 py-2" type="submit"
-                                        onSubmit={handleOnFormSubmit}>Order</Button>
+                                <Button className="signing-button mt-3 py-2" type="button"
+                                        onClick={handleOnFormSubmit}>Order</Button>
                             </Col>
 
                         </Row>

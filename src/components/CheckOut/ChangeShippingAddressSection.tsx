@@ -1,7 +1,7 @@
 import {ChangeEvent, FC, useState} from "react";
 import {Col, Form, FormCheck, FormControl, FormGroup, FormLabel, Row} from "react-bootstrap";
 import {FaRegCreditCard, FaRegMoneyBillAlt} from "react-icons/fa";
-import ChangeShippingAddressForm from "./ChangeShippingAddressForm";
+import ShippingAddressForm from "./ShippingAddressForm.tsx";
 
 const ChangeShippingAddressSection: FC = () => {
 
@@ -9,6 +9,7 @@ const ChangeShippingAddressSection: FC = () => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
 
     const handleOnRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault()
         const radioID: string = e.target.id;
         switch (radioID) {
             case 'sameAddress':
@@ -29,27 +30,33 @@ const ChangeShippingAddressSection: FC = () => {
             <Form>
                 <FormGroup className='shipping-address-change-radio my-2'>
                     <Row>
-                        <Col lg={4}  md={12} className='pe-0'>
-                            <FormCheck className='d-flex align-items-center' id='sameAddress'
-                                       name='userAddressCheck' type='radio'
-                                       label='Same as user address' onChange={handleOnRadioChange} checked={isSameUserAddress}/>
+                        <Col lg={4} md={12} className='pe-0'>
+                            <FormCheck
+                                className='d-flex align-items-center'
+                                id='sameAddress'
+                                name='userAddressCheck' type='radio'
+                                label='Same as user address' onChange={handleOnRadioChange}
+                                checked={isSameUserAddress}/>
                         </Col>
                         <Col lg={6} className='ps-lg-0'>
-                            <FormCheck className='d-flex align-items-center' name='userAddressCheck' id='changeAddress'
-                                       type='radio' label='Change shipping address'
-                                       onChange={handleOnRadioChange}/>
+                            <FormCheck
+                                className='d-flex align-items-center'
+                                name='userAddressCheck'
+                                id='changeAddress'
+                                type='radio' label='Change shipping address'
+                                onChange={handleOnRadioChange}/>
                         </Col>
                     </Row>
                 </FormGroup>
 
                 <FormGroup>
-                    {!isSameUserAddress && <ChangeShippingAddressForm/>}
+                    {!isSameUserAddress && <ShippingAddressForm/>}
                 </FormGroup>
                 <FormGroup className='mt-lg-2 fs-6'>
-                    <FormLabel >Add Delivery Instructions (Optional)</FormLabel>
+                    <FormLabel>Add Delivery Instructions (Optional)</FormLabel>
                     <FormControl as='textarea' rows={3}/>
                 </FormGroup>
-                <FormLabel className='my-lg-2' >Payment Methods</FormLabel>
+                <FormLabel className='my-lg-2'>Payment Methods</FormLabel>
 
                 <FormGroup className='payment-method'>
                     <Row className='mx-0 '>

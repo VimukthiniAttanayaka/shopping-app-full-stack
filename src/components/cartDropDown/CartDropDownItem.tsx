@@ -1,28 +1,23 @@
 import React from 'react';
-import { Row, Col, Image } from 'react-bootstrap';
-import { ICart } from '../../Types/ShoppingTypes';
-import { carrot, coconut } from "../../assets/images/images";
-import { Trash } from 'react-feather';
+import {Col, Image, Row} from 'react-bootstrap';
+import {Trash} from 'react-feather';
+import {useDispatch} from "react-redux";
+import {deleteItem} from "../../redux/slices/OrderSlice.ts";
+import {ICartItem} from "../../Types/ICartItem.tsx";
 
 type CartDropDownItemProps = {
-    item: ICart,
-    index: number,
-    onCartItemRemove: (index: number) => void;
+    item: ICartItem,
 }
 const CartDropDownItem: React.FC<CartDropDownItemProps> = (props) => {
-    const { item, onCartItemRemove, index } = props;
-    var imglink;
-    const itemfullprice = parseInt(item.price) * item.quantity;
-
-    if (item.img === "carrot") {
-        imglink = carrot;
-    } else if (item.img === "coconut") {
-        imglink = coconut;
+    const { item } = props;
+    const dispatch = useDispatch()
+    const handleOnCartItemRemove = (id: string) => {
+        dispatch(deleteItem(id))
     }
     return (
         <Row className='pe-0'>
             <Col xs={4} className="cart-d-img p-0">
-                <Image src={imglink} alt="item img" />
+                <Image src={item.image} alt="item img" />
             </Col>
             <Col xs={6} className="cart-d-details p-0">
                 <Row className='cart-d-name'>
@@ -33,8 +28,8 @@ const CartDropDownItem: React.FC<CartDropDownItemProps> = (props) => {
                 </Row>
             </Col>
             <Col xs={2} className="cart-d-price p-0">
-                <h5 className='font-12px mb-3 me-3' onClick={() => onCartItemRemove(index)}><Trash className='cart-trash colour-gray' /></h5>
-                <h5 className='font-12px me-3'>Rs.{itemfullprice}.00</h5>
+                <h5 className='font-12px mb-3 me-3' onClick={() => handleOnCartItemRemove(item.id || '')}><Trash className='cart-trash colour-gray' /></h5>
+                <h5 className='font-12px me-3'>Rs.{+item.price * +item.quantity}.00</h5>
             </Col>
             <hr />
         </Row>

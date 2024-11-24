@@ -3,6 +3,8 @@ import {ICart} from '../../Types/ShoppingTypes';
 import {Button, Col, Form, Image, Row} from 'react-bootstrap';
 import {useLocation} from "react-router-dom";
 import {IProduct} from "../../Types/IProduct";
+import {useDispatch} from "react-redux";
+import {addToCart} from "../../redux/slices/OrderSlice.ts";
 
 type ProductProps = {
     product: IProduct,
@@ -13,26 +15,35 @@ const Product: React.FC<ProductProps> = (props) => {
 
     const location = useLocation();
     const [url, setURL] = useState<string>('');
-    const [quantity, setQuantity] = useState<number>(1);
+    const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
     const {product} = props;
     const [cartBtnText, setCartBtnText] = useState('Add To Cart');
     const [cartBtnBackground, setCartBtnBackground] = useState('add-cart-btn');
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setURL(location.pathname);
     }, [location]);
 
     const handleOnQuantityChanged = (num: string) => {
-        setQuantity(parseInt(num));
+        setSelectedQuantity(parseInt(num));
     }
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
     }
 
     const cartAdd = () => {
         setCartBtnText("Update");
         setCartBtnBackground("add-cart-btn-u");
+        dispatch(addToCart({
+            id: product.id || '',
+            name: product.name,
+            quantity: selectedQuantity,
+            price: product.price,
+            discount: (+product.price - +product.discountedPrice).toString(),
+            image: product.image,
+        }))
     }
     return (
         <div
@@ -59,7 +70,7 @@ const Product: React.FC<ProductProps> = (props) => {
                         <Row className='mb-1'>
                             <Col xs={12} sm={5} md={4} lg={6} className="ps-2">
                                 <Form.Group>
-                                    <Form.Control type='number' min="1" value={quantity}
+                                    <Form.Control type='number' min="1" value={selectedQuantity}
                                                   onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
                                                       handleOnQuantityChanged(ev.target.value)
                                                   }/>

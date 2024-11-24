@@ -5,6 +5,7 @@ import {ICart} from './Types/ShoppingTypes';
 // import {useToasts} from 'react-toast-notifications';
 import ECommerceApp from './view/ECommerceApp';
 import AdminApp from "./view/AdminApp";
+import MyProfile from "./components/pages/MyProfile.tsx";
 const UpdateProduct = React.lazy(() => import("./components/Admin/Products/UpdateProduct"));
 const Home = React.lazy(() => import("./components/pages/Home"));
 const AboutUs = React.lazy(() => import("./components/pages/staticpages/AboutUs"));
@@ -45,27 +46,20 @@ const App = () => {
         // addToast("Item Add To Cart", {appearance: 'success', autoDismiss: true});
     };
 
-    const handleOnCartItemRemove = (index: number) => {
-        const allItems: ICart[] = cartItems.slice();
-        allItems.splice(index, 1);
-        setCartItems(allItems);
-        // addToast("Item Deleted", {appearance: 'success', autoDismiss: true});
-    }
-
     return (
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<ECommerceApp cartItems={cartItems}
-                                                       onCartItemRemove={handleOnCartItemRemove}/>}>
+                <Route path='/' element={<ECommerceApp />}>
                     <Route path='/' element={<Home onCartItemCreate={handleOnCartItemCreate}/>}/>
                     <Route path='/about' element={<AboutUs/>}/>
                     <Route path='/contact' element={<ContactUs/>}/>
                     <Route path='/faq' element={<FAQ/>}/>
                     <Route path='/pricing' element={<Pricing/>}/>
-                    <Route path='/checkout' element={<CheckOut cartItems={cartItems} setCartItems={setCartItems}/>}/>
+                    <Route path='/checkout' element={<CheckOut/>}/>
                     <Route path='/loginpage' element={<LoginPage/>}/>
                     <Route path='/signuppage' element={<SignupPage/>}/>
                     <Route path='/forgotpassword' element={<ForgotPassWord/>}/>
+                    <Route path='/my-account' element={<MyProfile/>}/>
                 </Route>
                 <Route path='/admin' element={<AdminApp/>}>
                     <Route path='/admin/products' element={<Products/>}/>

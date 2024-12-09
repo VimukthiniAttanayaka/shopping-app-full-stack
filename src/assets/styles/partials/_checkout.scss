@@ -180,6 +180,10 @@ input {
     background-color: $button-green;
     box-shadow: none;
   }
+
+  &:disabled {
+    background-color: $button-green;
+  }
 }
 
 #shipping-country > div {

@@ -4,7 +4,7 @@ import {Button, Col, Form, Image, Row} from 'react-bootstrap';
 import {useLocation} from "react-router-dom";
 import {IProduct} from "../../Types/IProduct";
 import {useDispatch} from "react-redux";
-import {addToCart} from "../../redux/slices/OrderSlice.ts";
+import {addToCart, changeQuantity} from "../../redux/slices/OrderSlice.ts";
 
 type ProductProps = {
     product: IProduct,
@@ -17,8 +17,7 @@ const Product: React.FC<ProductProps> = (props) => {
     const [url, setURL] = useState<string>('');
     const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
     const {product} = props;
-    const [cartBtnText, setCartBtnText] = useState('Add To Cart');
-    const [cartBtnBackground, setCartBtnBackground] = useState('add-cart-btn');
+    const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -34,8 +33,7 @@ const Product: React.FC<ProductProps> = (props) => {
     }
 
     const cartAdd = () => {
-        setCartBtnText("Update");
-        setCartBtnBackground("add-cart-btn-u");
+        setIsAddedToCart(true);
         dispatch(addToCart({
             id: product.id || '',
             name: product.name,
@@ -45,6 +43,14 @@ const Product: React.FC<ProductProps> = (props) => {
             image: product.image,
         }))
     }
+
+    const updateCart = () => {
+        dispatch(changeQuantity({
+            id: product.id,
+            quantity: selectedQuantity,
+        }))
+    }
+
     return (
         <div
              className={url === '/admin/products/addproduct' ? 'mb-1 mb-sm-2 products p-0' : 'mt-1 mb-1 mb-sm-2 products p-0'}>
@@ -77,10 +83,11 @@ const Product: React.FC<ProductProps> = (props) => {
                                 </Form.Group>
                             </Col>
                             <Col xs={12} sm={7} md={8} lg={6} className='product-add-cart ps-sm-0 pe-2'>
-                                <Button type='submit' variant="light" className={cartBtnBackground}
-                                        onClick={cartAdd}
+                                <Button type='submit' variant="light"
+                                        className={isAddedToCart ?'add-cart-btn-u' : 'add-cart-btn'}
+                                        onClick={isAddedToCart ? updateCart : cartAdd}
                                         disabled={url === '/admin/products/addproduct'}
-                                >{cartBtnText}</Button>
+                                >{isAddedToCart ? 'Update' : 'Add To Cart'}</Button>
                             </Col>
                         </Row>
                     </Form>

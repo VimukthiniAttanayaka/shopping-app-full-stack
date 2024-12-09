@@ -20,11 +20,16 @@ export const orderSlice = createSlice({
         deleteItem: (state, action: PayloadAction<string>) => {
             state.cart = state.cart.filter((item: ICartItem) => item.id !== action.payload)
         },
+        changeQuantity: (state, action: PayloadAction<{ id: string, quantity: number }>) => {
+            state.cart = state.cart.map((item: ICartItem) =>
+                item.id === action.payload.id ? {...item, quantity: action.payload.quantity} : item)
+        }
     }
 });
 
 export const {
     addToCart,
-    deleteItem
+    deleteItem,
+    changeQuantity
 } = orderSlice.actions
 export default orderSlice.reducer;

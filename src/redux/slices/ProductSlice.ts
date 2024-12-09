@@ -1,12 +1,15 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IProduct} from "../../Types/IProduct";
+import CategoryDataList from "../../Types/CategoryDateList.tsx";
 
 interface productState {
     products: IProduct[]
+    selectedCategory: string
 }
 
 const initialState: productState = {
-    products: []
+    products: [],
+    selectedCategory: CategoryDataList[0].name
 }
 export const productSlice = createSlice({
     name: 'products',
@@ -28,6 +31,9 @@ export const productSlice = createSlice({
         setProducts: (state, action: PayloadAction<IProduct[]>) => {
             state.products = action.payload;
         },
+        setSelectedCategory: (state, action: PayloadAction<string>) => {
+            state.selectedCategory = action.payload;
+        },
     }
     })
 ;
@@ -37,7 +43,8 @@ export const {
     // updateProduct,
     // deleteProduct,
     // getProduct,
-    setProducts
+    setProducts,
+    setSelectedCategory
 } = productSlice.actions;
 export default productSlice.reducer;
 

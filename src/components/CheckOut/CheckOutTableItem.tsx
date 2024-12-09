@@ -3,7 +3,7 @@ import {Image} from "react-bootstrap";
 import {MinusCircle, PlusCircle, Trash} from "react-feather";
 import NumberFormat from 'react-number-format';
 import {ICartItem} from "../../Types/ICartItem.tsx";
-import {deleteItem} from "../../redux/slices/OrderSlice.ts";
+import {changeQuantity, deleteItem} from "../../redux/slices/OrderSlice.ts";
 import {useDispatch} from "react-redux";
 
 type checkOutTableItemProps = {
@@ -13,27 +13,26 @@ type checkOutTableItemProps = {
 const CheckOutTableItem: FC<checkOutTableItemProps> = (props) => {
     const {cartItem, index,} = props;
     const unitPrice: number = parseFloat(cartItem.price); //This should be replaced with the real unit value
-    const [itemQty, setItemQty] = useState<number>(cartItem.quantity);
-    const [itemTotal, setItemTotal] = useState<number>(itemQty * unitPrice)
+    const [itemTotal, setItemTotal] = useState<number>(cartItem.quantity * unitPrice)
     const dispatch = useDispatch();
     //Item quantity  increase handler
     const handleOnItemQtyIncrease = () => {
         // TODO: set the max limit
-        setItemQty(itemQty + 1);
+        dispatch(changeQuantity({quantity: cartItem.quantity + 1, id: cartItem.id}))
     }
 
     //Item quantity  decrease handler
     const handleOnItemQtyDecrease = () => {
-        if (itemQty > 1) {
-            setItemQty(itemQty - 1);
+        if (cartItem.quantity > 1) {
+            dispatch(changeQuantity({quantity: cartItem.quantity - 1, id: cartItem.id}))
         }
     }
 
     //handle item total on quantity change
     useEffect(() => {
-        const newItemTotal = itemQty * unitPrice;
+        const newItemTotal = cartItem.quantity * unitPrice;
         setItemTotal(newItemTotal);
-    }, [itemQty])
+    }, [cartItem.quantity, unitPrice])
 
     const handleOnRemoveItemClick = (id: string) => {
         dispatch(deleteItem(id))
@@ -50,7 +49,7 @@ const CheckOutTableItem: FC<checkOutTableItemProps> = (props) => {
             <td className='px-lg-5'>
                 <MinusCircle size="20" className="hover-pointer table-item-icon" id="increaseQty"
                              onClick={handleOnItemQtyDecrease}/>
-                <span className="px-1 ">{itemQty}</span>
+                <span className="px-1 ">{cartItem.quantity}</span>
                 <PlusCircle size="20" className="hover-pointer table-item-icon" id="decreaseQty"
                             onClick={handleOnItemQtyIncrease}/>
             </td>

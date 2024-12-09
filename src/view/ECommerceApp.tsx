@@ -9,13 +9,9 @@ import ContactBar from '../components/navbars/ContactBar';
 const ECommerceApp: React.FC = () => {
     return (
         <Container fluid={true}>
-            <Row>
-                <Col>
-                    <ContactBar/>
-                    <LogoBar />
-                    <NavBar/>
-                </Col>
-            </Row>
+            <ContactBar/>
+            <div className='sticky-top'><LogoBar/></div>
+            <NavBar/>
             <Outlet/>
             <Row>
                 <Col>

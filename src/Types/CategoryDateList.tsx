@@ -4,7 +4,13 @@ import Food from '../assets/images/categories_image/Food.webp';
 import Pharmacy from '../assets/images/categories_image/Pharmacy.webp';
 import Electronic from '../assets/images/categories_image/Electronics.webp';
 
-const CategoryDataList = [
+export interface CategoryDataType {
+    id: number;
+    name: string;
+    image: string;
+}
+
+const CategoryDataList: CategoryDataType[] = [
   {
     id: 1,
     name: 'All',

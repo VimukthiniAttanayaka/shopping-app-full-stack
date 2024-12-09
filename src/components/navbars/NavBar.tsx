@@ -1,31 +1,25 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
-import {Navbar, NavLink, Nav, NavDropdown, Row, Col} from "react-bootstrap";
-import {ISelectOption} from "../../Types/ISelectOption";
+import {Col, Nav, Navbar, NavDropdown, NavLink, Row} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
+import CategoryDataList, {CategoryDataType} from "../../Types/CategoryDateList.tsx";
+import {setSelectedCategory} from "../../redux/slices/ProductSlice.ts";
 
 const NavBar: React.FC = () => {
-
-    const [selectedCategoryDropdownItem, SetSelectedCategoryDropdownItem] = useState<null | ISelectOption>(null)
+    const dispatch = useDispatch()
+    const selectedCategory = useSelector((state: RootState) => state.products.selectedCategory)
 
     //handle categories dropdown
-    const onHandleDropdownSelect = (e: null | string) => {
-        options.forEach((item) => {
-            if (item.value.toString() === e) {
-                SetSelectedCategoryDropdownItem(item);
-            }
-        });
+    const onHandleDropdownSelect = (event: string | null) => {
+        if(event) {
+            dispatch(setSelectedCategory(event))
+        }
     }
 
-    const options: ISelectOption[] = [
-        {value: 1, label: 'Category 1'},
-        {value: 2, label: 'Category 2'},
-        {value: 3, label: 'Category 3'},
-        {value: 4, label: 'Category 4'},
-    ];
-
     const renderCategories = () => {
-        return options.map((option) => {
-            return <NavDropdown.Item key={option.value} eventKey={option.value}>{option.label}</NavDropdown.Item>
+        return CategoryDataList.map((option: CategoryDataType) => {
+            return <NavDropdown.Item key={option.name} eventKey={option.name}>{option.name}</NavDropdown.Item>
         })
     }
 
@@ -35,7 +29,7 @@ const NavBar: React.FC = () => {
                 <Navbar className='py-3 header-navbar' collapseOnSelect>
                     <Nav className='ms-0 ms-lg-5 ms-md-4 my-1'>
                         <NavDropdown
-                            title={selectedCategoryDropdownItem ? selectedCategoryDropdownItem.label : "Categories"}
+                            title={selectedCategory === 'All' ? "Categories" : selectedCategory}
                             id="collasible-nav-dropdown" className="navbar-dropdown ps-0 px-lg-2 py-0"
                             onSelect={onHandleDropdownSelect}>
                             {renderCategories()}

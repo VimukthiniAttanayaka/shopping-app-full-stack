@@ -5,13 +5,13 @@ import ChangeShippingAddressSection from "../CheckOut/ChangeShippingAddressSecti
 const MyProfile = () => {
     return (
         <div>
-            <Col md={6} className="border px-0 mt-1">
+            <Col md={6} className="border px-0 mt-1 mx-auto">
                 <p className="border-bottom py-3 mx-3">
                     Shipping and Billing Address
                 </p>
                 <BillingForm/>
             </Col>
-            <Col md={6} className="px-0 mt-4 mt-lg-4">
+            <Col md={6} className="px-0 mt-4 mt-lg-4 mx-auto">
                 <ChangeShippingAddressSection/>
             </Col>
         </div>

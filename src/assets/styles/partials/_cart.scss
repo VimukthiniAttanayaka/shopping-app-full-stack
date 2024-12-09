@@ -25,12 +25,10 @@ $quentity-color:#8f8f8f;
     display: flex;
     float: right;
     margin-right: 15%;
-    padding: 15px 15px 10px 35px ;
     background-color: white;
     position: relative;
-    .cart-content{
-        width: 300px;
-    }
+        width: 350px;
+
     .cart-d-img img{
         width: 80px;
         height: 80px;
@@ -41,8 +39,7 @@ $quentity-color:#8f8f8f;
         }
     }
     .cart-d-price h5{
-        display: flex;
-        float: right;
+        text-align: end;
         color: $price-color;
         vertical-align: text-bottom;
     }
@@ -76,7 +73,7 @@ $quentity-color:#8f8f8f;
     .cart-priview-header{
         height: auto;
         margin-right: 28%;
-        padding: 15px 15px 0 35px ;
+        padding: 10px ;
     }
 }
 @media(max-width:576px){

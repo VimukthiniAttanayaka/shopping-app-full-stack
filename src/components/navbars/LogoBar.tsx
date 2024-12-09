@@ -13,11 +13,7 @@ const LogoBar: React.FC = () => {
     const navigate = useNavigate();
 
     const cartVisible = () => {
-        if (isCartVisible) {
-            setIsCartVisible(false)
-        } else {
-            setIsCartVisible(true);
-        }
+        setIsCartVisible(!isCartVisible)
     }
 
 
@@ -44,7 +40,7 @@ const LogoBar: React.FC = () => {
                         </Link>
                     </Col>
                     <Col xs={12} className='cart-priview'>
-                        {isCartVisible && <CartDropDown />}
+                        {isCartVisible && <CartDropDown handleCartDropDownClose={cartVisible}/>}
                     </Col>
                 </Row>
             </Col>

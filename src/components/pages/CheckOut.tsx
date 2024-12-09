@@ -1,4 +1,4 @@
-import {FC, useEffect, useRef, useState} from 'react';
+import {ChangeEvent, FC, useEffect, useRef, useState} from 'react';
 import {Button, Col, Form, FormControl, Image, Row, Table} from "react-bootstrap";
 import CheckOutTableItem from "../CheckOut/CheckOutTableItem";
 import NumberFormat from "react-number-format";
@@ -20,12 +20,11 @@ interface ShippingFormHandles {
 
 const CheckOut: FC = () => {
     const cartItems = useSelector((state: RootState) => state.orders.cart)
-    const [createOrder, {data: createData}] = useMutation(CREATE_ORDER)
+    const [createOrder] = useMutation(CREATE_ORDER)
     const [discountCode, setDiscountCode] = useState<string>('')
     const [discountByCode, setDiscountByCode] = useState<number>(0)
     const [colSpan1, setColSpan1] = useState<number>(3);
     const [colSpan2, setColSpan2] = useState<number>(4);
-    const [cartTotal] = useState<number>(100);
 
 
     const renderCartItems = () => {
@@ -35,16 +34,14 @@ const CheckOut: FC = () => {
     }
 
     //discount code submit handler
-    const handleOnDiscountCodeSubmit = (e: any) => {
-        e.preventDefault();
-
-        if(Object.keys(Discounts).includes(discountCode)){
-            setDiscountByCode(Discounts[discountCode])
+    const handleOnDiscountCodeSubmit = () => {
+        if (Object.keys(Discounts).includes(discountCode)) {
+            setDiscountByCode(Discounts[discountCode as keyof typeof Discounts])
         }
     }
 
     //Discount code change handler
-    const handleOnDiscountCodeChange = (event: any) => {
+    const handleOnDiscountCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
         setDiscountCode(event.target.value)
     }
 
@@ -95,6 +92,22 @@ const CheckOut: FC = () => {
         }
     }
 
+    const subTotalCalculate = () => {
+        let subtotal = 0;
+        for (let i = 0; i < cartItems.length; i++) {
+            subtotal = (parseInt(cartItems[i].price) * +cartItems[i].quantity) + subtotal;
+        }
+        return subtotal;
+    }
+
+    const discountCalculate = () => {
+        let subtotal = 0;
+        for (let i = 0; i < cartItems.length; i++) {
+            subtotal = (parseInt(cartItems[i].discount) * +cartItems[i].quantity) + subtotal;
+        }
+        return subtotal;
+    }
+
     // create an event listener
     useEffect(() => {
         window.addEventListener("resize", handleResize)
@@ -139,12 +152,15 @@ const CheckOut: FC = () => {
                             <tr className="px-0">
                                 {colSpan1 !== 0 && <td colSpan={colSpan1}/>}
                                 <td colSpan={colSpan2} className='pe-0'>
-                                    <Form className="d-flex justify-content-start align-items-center"
-                                          onSubmit={handleOnDiscountCodeSubmit}>
+                                    <Form className="d-flex justify-content-start align-items-center">
                                         <span className="fs-5 me-3 discount-code-text">Have a discount code? </span>
-                                        <FormControl type="text" className="discount-input me-3" value={discountCode}
-                                                     onChange={handleOnDiscountCodeChange}/>
-                                        <Button className="signing-button px-4" type="button">APPLY</Button>
+                                        <FormControl
+                                            type="text"
+                                            className="discount-input me-3"
+                                            value={discountCode}
+                                            onChange={handleOnDiscountCodeChange}/>
+                                        <Button className="signing-button px-4" type="button"
+                                                disabled={!!discountByCode} onClick={handleOnDiscountCodeSubmit}>APPLY</Button>
                                     </Form>
                                 </td>
                             </tr>
@@ -162,15 +178,30 @@ const CheckOut: FC = () => {
                                 </td>
                             </tr>
 
-                            <tr className="checkout-total">
-                                <td colSpan={5} className='left text'>Total</td>
+                            {!!discountByCode && <tr>
+                                <td colSpan={5}>Discount</td>
                                 <td colSpan={2} className="px-0">
-                                    <NumberFormat className='checkout-number-format-total text-red fw-bold bg-transparent'
+                                    <NumberFormat className='checkout-number-format-delivery bg-transparent'
                                                   prefix="Rs."
-                                                  value={cartTotal}
+                                                  value={discountByCode}
                                                   decimalScale={2}
                                                   fixedDecimalScale={true}
                                                   disabled
+                                    />
+                                </td>
+                            </tr>}
+
+                            <tr className="checkout-total">
+                                <td colSpan={5} className='left text'>Total</td>
+                                <td colSpan={2} className="px-0 text-end">
+                                    <NumberFormat
+                                        className='checkout-number-format-total text-red fw-bold bg-transparent'
+                                        displayType={"text"}
+                                        prefix="Rs."
+                                        value={subTotalCalculate() - discountCalculate() - discountByCode + DeliveryCharge}
+                                        decimalScale={2}
+                                        fixedDecimalScale={true}
+                                        disabled
                                     />
                                 </td>
                             </tr>

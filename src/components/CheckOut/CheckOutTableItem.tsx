@@ -30,7 +30,7 @@ const CheckOutTableItem: FC<checkOutTableItemProps> = (props) => {
 
     //handle item total on quantity change
     useEffect(() => {
-        const newItemTotal = cartItem.quantity * unitPrice;
+        const newItemTotal = cartItem.quantity * (unitPrice - +cartItem.discount);
         setItemTotal(newItemTotal);
     }, [cartItem.quantity, unitPrice])
 
@@ -54,6 +54,8 @@ const CheckOutTableItem: FC<checkOutTableItemProps> = (props) => {
                             onClick={handleOnItemQtyIncrease}/>
             </td>
             <td><NumberFormat className='checkout-number-format' prefix="Rs." value={unitPrice} decimalScale={2}
+                              fixedDecimalScale={true} readOnly/></td>
+            <td><NumberFormat className='checkout-number-format' prefix="Rs." value={cartItem.discount} decimalScale={2}
                               fixedDecimalScale={true} readOnly/></td>
             <td><NumberFormat className='checkout-number-format' prefix="Rs." value={itemTotal} decimalScale={2}
                               fixedDecimalScale={true}/></td>

@@ -3,8 +3,10 @@ import {ICart} from '../../Types/ShoppingTypes';
 import {Button, Col, Form, Image, Row} from 'react-bootstrap';
 import {useLocation} from "react-router-dom";
 import {IProduct} from "../../Types/IProduct";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addToCart, changeQuantity} from "../../redux/slices/OrderSlice.ts";
+import {RootState} from "../../redux/store.ts";
+import {ICartItem} from "../../Types/ICartItem.tsx";
 
 type ProductProps = {
     product: IProduct,
@@ -17,12 +19,10 @@ const Product: React.FC<ProductProps> = (props) => {
     const [url, setURL] = useState<string>('');
     const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
     const {product} = props;
+    const cart = useSelector((state: RootState) => state.orders.cart)
     const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        setURL(location.pathname);
-    }, [location]);
 
     const handleOnQuantityChanged = (num: string) => {
         setSelectedQuantity(parseInt(num));
@@ -33,7 +33,6 @@ const Product: React.FC<ProductProps> = (props) => {
     }
 
     const cartAdd = () => {
-        setIsAddedToCart(true);
         dispatch(addToCart({
             id: product.id || '',
             name: product.name,
@@ -46,14 +45,27 @@ const Product: React.FC<ProductProps> = (props) => {
 
     const updateCart = () => {
         dispatch(changeQuantity({
-            id: product.id,
+            id: product.id || '',
             quantity: selectedQuantity,
         }))
     }
 
+    useEffect(() => {
+        setURL(location.pathname);
+    }, [location]);
+
+    useEffect(() => {
+        const existingCartItem = cart.find((item: ICartItem) => item.id == product.id);
+        if (existingCartItem) {
+            setIsAddedToCart(true)
+            setSelectedQuantity(existingCartItem.quantity)
+        }
+
+    }, [cart])
+
     return (
         <div
-             className={url === '/admin/products/addproduct' ? 'mb-1 mb-sm-2 products p-0' : 'mt-1 mb-1 mb-sm-2 products p-0'}>
+            className={url === '/admin/products/addproduct' ? 'mb-1 mb-sm-2 products p-0' : 'mt-1 mb-1 mb-sm-2 products p-0'}>
             <Row className='product-item'>
                 <Col sm={12} className='product-img'>
                     <Image src={product.image} alt="product"/>
@@ -84,7 +96,7 @@ const Product: React.FC<ProductProps> = (props) => {
                             </Col>
                             <Col xs={12} sm={7} md={8} lg={6} className='product-add-cart ps-sm-0 pe-2'>
                                 <Button type='submit' variant="light"
-                                        className={isAddedToCart ?'add-cart-btn-u' : 'add-cart-btn'}
+                                        className={isAddedToCart ? 'add-cart-btn-u' : 'add-cart-btn'}
                                         onClick={isAddedToCart ? updateCart : cartAdd}
                                         disabled={url === '/admin/products/addproduct'}
                                 >{isAddedToCart ? 'Update' : 'Add To Cart'}</Button>

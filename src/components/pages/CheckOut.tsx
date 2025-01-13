@@ -12,6 +12,7 @@ import {DeliveryCharge} from "../../static/data.ts";
 import {Discounts} from "../../static/enums.ts";
 import {useMutation} from "@apollo/client";
 import {CREATE_ORDER} from "../../api/order.ts";
+import {useNavigate} from "react-router-dom";
 
 interface ShippingFormHandles {
     validateForm: () => Promise<any>;
@@ -19,7 +20,9 @@ interface ShippingFormHandles {
 }
 
 const CheckOut: FC = () => {
+    const navigate = useNavigate()
     const cartItems = useSelector((state: RootState) => state.orders.cart)
+    const isAuthorized = useSelector((state: RootState) => state.auth.isAuthorized)
     const [createOrder] = useMutation(CREATE_ORDER)
     const [discountCode, setDiscountCode] = useState<string>('')
     const [discountByCode, setDiscountByCode] = useState<number>(0)
@@ -142,6 +145,7 @@ const CheckOut: FC = () => {
                                 <th>Name</th>
                                 <th>Qty</th>
                                 <th>Unit Price</th>
+                                <th>Discount</th>
                                 <th>Amount</th>
                                 <th/>
                             </tr>
@@ -216,7 +220,7 @@ const CheckOut: FC = () => {
 
                     <Col lg={7} md={12} className="mt-3 ps-lg-3">
                         <Row>
-                            <Col md={12} className="border py-4">
+                            {!isAuthorized && <Col md={12} className="border py-4">
                                 <Row className='signup-banner'>
                                     <Col lg={9} md={9} sm={5} className='align-items-center d-inline-flex'>
                                       <span className='mx-lg-2 mx-0'>
@@ -224,11 +228,10 @@ const CheckOut: FC = () => {
                                       </span>
                                     </Col>
                                     <Col lg={3} md={3} sm={4} className='d-flex justify-content-end'>
-                                        <Button className="signing-button" type="submit">Sign in</Button>
+                                        <Button className="signing-button" type="submit" onClick={() => navigate('/loginpage')}>Sign in</Button>
                                     </Col>
                                 </Row>
-
-                            </Col>
+                            </Col>}
                             <Col md={12} className="border px-0 mt-1">
                                 <p className="border-bottom py-3 mx-3">
                                     Shipping and Billing Address
